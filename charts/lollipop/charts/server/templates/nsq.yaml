@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nsqd
+  labels:
+    app: nsq
+spec:
+  ports:
+    - port: 4150
+      targetPort: 4150
+      nodePort: 30150
+      name: tcp
+    - port: 4151
+      targetPort: 4151
+      nodePort: 30151
+      name: http
+  type: NodePort
+  selector:
+    app: nsq
+    component: nsqd
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: nsqd
+spec:
+  selector:
+    matchLabels:
+      app: nsq
+  serviceName: "nsqd"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nsq
+        component: nsqd
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      containers:
+        - name: nsqd
+          image: nsqio/nsq:v1.2.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4150
+              name: tcp
+            - containerPort: 4151
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ping
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: datadir
+              mountPath: /data
+          command:
+            - /usr/local/bin/nsqd
+            - -data-path
+            - /data
+      terminationGracePeriodSeconds: 5
+      volumes:
+        - name: datadir
+          persistentVolumeClaim:
+            claimName: datadir
+  volumeClaimTemplates:
+    - metadata:
+        name: datadir
+        annotations:
+          volume.alpha.kubernetes.io/storage-class: anything
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 1Gi

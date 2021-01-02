@@ -1,0 +1,35 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: l6p:system
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["events"]
+  - apiGroups: ["batch"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["jobs"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: l6p:system
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["secrets"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  namespace: {{ .Values.engineNamespace }}
+  name: l6p:space
+rules:
+  - apiGroups: [""]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["secrets"]
+  - apiGroups: [""]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+    resources: ["pods", "pods/log"]

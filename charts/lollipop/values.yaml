@@ -1,0 +1,55 @@
+global:
+  mongodb:
+    host: "mongodb.l6p-system.svc.cluster.local:27017"
+    user: "root"
+    pass: "rootpassword"
+  kafka:
+    endpoint: "kafka.l6p-system.svc.cluster.local:9092"
+    topic: "l6p.log"
+
+server:
+  image:
+    repository: docker.io/l6pio/lollipop
+    pullPolicy: Always
+    tag: 0.1.0
+
+  storageClass: "hostpath"
+
+  service:
+    port: 80
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      nginx.ingress.kubernetes.io/proxy-body-size: "0"
+    hosts:
+      - host: local.l6p.io
+        path: "/api/v1"
+    tls: []
+
+web:
+  image:
+    repository: docker.io/l6pio/candy
+    pullPolicy: Always
+    tag: 0.1.0
+
+  apiBaseUrl: "http://local.l6p.io/api/v1"
+
+  service:
+    port: 80
+
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - host: local.l6p.io
+        path: "/"
+    tls: []
+
+macaron:
+  image:
+    repository: docker.io/l6pio/macaron
+    pullPolicy: Always
+    tag: 0.1.0

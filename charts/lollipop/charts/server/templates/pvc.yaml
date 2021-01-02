@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: l6p-storage
+  namespace: {{ .Values.engineNamespace }}
+spec:
+  resources:
+    requests:
+      storage: 1Gi
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: {{ .Values.storageClass }}

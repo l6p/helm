@@ -1,0 +1,23 @@
+image:
+  tag: 4.4.2-debian-10-r0
+
+auth:
+  enabled: true
+  rootPassword: rootpassword
+
+resources:
+  requests:
+    cpu: 0.1
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
+
+persistence:
+  enabled: true
+  storageClass: "hostpath"
+  size: "5Gi"
+
+service:
+  type: NodePort
+  nodePort: 32017

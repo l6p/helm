@@ -1,0 +1,14 @@
+apiVersion: v2
+name: lollipop
+description: A Helm chart for Lollipop
+type: application
+version: 0.1.0
+appVersion: 0.1.0
+
+dependencies:
+  - name: server
+    version: 0.1.0
+  - name: web
+    version: 0.1.0
+  - name: macaron
+    version: 0.1.0

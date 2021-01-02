@@ -1,0 +1,31 @@
+image:
+  tag: 2.6.0-debian-10-r80
+
+replicas: 1
+
+resources:
+  requests:
+    cpu: 0.1
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
+
+persistence:
+  storageClass: "hostpath"
+
+external:
+  enabled: true
+
+configurationOverrides:
+  "auto.create.topics.enable": true
+  "advertised.listeners": |-
+    EXTERNAL://localhost:$((31090 + ${KAFKA_BROKER_ID}))
+  "listener.security.protocol.map": |-
+    PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
+
+topics:
+  - name: l6p.log
+    partitions: 1
+    replicationFactor: 1
+    config: "cleanup.policy=delete,delete.retention.ms=3600000"
