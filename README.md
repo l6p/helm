@@ -65,7 +65,8 @@ kubectl get pods -n ingress-nginx -l app.kubernetes.io/name=ingress-nginx --watc
 Creates **l6p-system** and **l6p-space** K8s namespaces for the system and runtime components of Lollipop:
 
 ```
-kubectl create ns l6p-system && kubectl create ns l6p-space
+kubectl create ns l6p-system 
+kubectl create ns l6p-space
 ```
 
 ### Installing MongoDB
@@ -170,6 +171,6 @@ After entering the system, please first enter the **Settings** menu to make the 
 
 # Test Script Examples
 
-In the **examples** folder we provide examples of test scripts ranging from simple http request based tests to browser based end-to-end tests.
+In the **examples** folder we provide examples of test scripts ranging from API tests to browser based end-to-end tests.
 
 We also provide two examples to demonstrate how to run and debug locally while creating the test cases.
