@@ -11,7 +11,7 @@ server:
   image:
     repository: docker.io/l6pio/lollipop
     pullPolicy: Always
-    tag: 0.1.4
+    tag: 0.1.5
 
   storageClass: "hostpath"
 
@@ -32,7 +32,7 @@ web:
   image:
     repository: docker.io/l6pio/candy
     pullPolicy: Always
-    tag: 0.1.4
+    tag: 0.1.5
 
   apiBaseUrl: "http://local.l6p.io/api/v1"
 
